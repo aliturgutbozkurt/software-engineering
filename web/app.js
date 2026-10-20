@@ -20,6 +20,7 @@
   const btnClosePdfModal = document.getElementById('btnClosePdfModal');
   const modalModulePdfList = document.getElementById('modalModulePdfList');
   const modalIndividualPdfList = document.getElementById('modalIndividualPdfList');
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
 
   // Initialize
   async function init() {
@@ -55,10 +56,34 @@
 
     setupEventListeners();
     buildPdfModalContent();
+
+    // Default theme: 'light'
+    const savedTheme = localStorage.getItem('software_eng_theme') || 'light';
+    applyTheme(savedTheme);
+
     handleHashNavigation();
   }
 
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.body.classList.add('theme-dark');
+      if (themeToggleBtn) themeToggleBtn.textContent = '🌙 Koyu';
+    } else {
+      document.body.classList.remove('theme-dark');
+      if (themeToggleBtn) themeToggleBtn.textContent = '☀️ Açık';
+    }
+    localStorage.setItem('software_eng_theme', theme);
+  }
+
   function setupEventListeners() {
+    // Theme Toggle
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('theme-dark');
+        applyTheme(isDark ? 'light' : 'dark');
+      });
+    }
+
     // Language Buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
